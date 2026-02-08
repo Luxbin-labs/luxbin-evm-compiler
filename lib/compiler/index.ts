@@ -1,10 +1,12 @@
 import { Lexer } from "./lexer";
 import { Parser } from "./parser";
 import { SolidityCodegen } from "./codegen";
+import { generateABI, type ABIEntry } from "./abiGenerator";
 
 export interface CompileResult {
   success: boolean;
   solidity: string;
+  abi: ABIEntry[];
   warnings: string[];
   error: string | null;
 }
@@ -20,11 +22,14 @@ export function compile(source: string, contractName = "LuxbinContract"): Compil
     const codegen = new SolidityCodegen(contractName);
     const { solidity, warnings } = codegen.generate(ast);
 
-    return { success: true, solidity, warnings, error: null };
+    const abi = generateABI(ast);
+
+    return { success: true, solidity, abi, warnings, error: null };
   } catch (e: unknown) {
     return {
       success: false,
       solidity: "",
+      abi: [],
       warnings: [],
       error: e instanceof Error ? e.message : "Unknown compilation error",
     };
@@ -34,3 +39,5 @@ export function compile(source: string, contractName = "LuxbinContract"): Compil
 export { Lexer } from "./lexer";
 export { Parser } from "./parser";
 export { SolidityCodegen } from "./codegen";
+export { generateABI } from "./abiGenerator";
+export type { ABIEntry } from "./abiGenerator";

@@ -209,6 +209,12 @@ export default function CompilerPage() {
           </div>
           <div className="flex items-center gap-4">
             <a
+              href="/deploy"
+              className="text-sm text-gray-400 hover:text-white transition"
+            >
+              Deploy IDE
+            </a>
+            <a
               href="/subdomains"
               className="text-sm text-gray-400 hover:text-white transition"
             >
